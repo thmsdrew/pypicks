@@ -52,7 +52,6 @@ def print_picks(picks):
 
 def validate_swap(first, second, num_picks):
     valid = False
-    print first, second, num_picks
     if first.isdigit() and second.isdigit():
         if int(first) <= num_picks and int(first) >= 1 and int(second) <= num_picks and int(second) >= 1:
             valid = True
@@ -73,6 +72,27 @@ def swap(first, second, picks):
     picks[second_idx][0] = second
     return picks
 
+def validate_flip(arg, num_picks):
+    valid = False
+    if arg.isdigit():
+        if int(arg) >= 1 and int(arg) <= num_picks:
+            valid = True
+    if valid == False:
+        print 'Invalid arguments for flip, must be one number between 1 and ' + str(num_picks)
+    return valid
+
+def flip(arg, picks):
+    flip_idx = int(arg) - 1
+    print flip_idx
+    pick = picks[flip_idx][2]
+    print pick
+    split_matchup = picks[flip_idx][1].split('@')
+    print split_matchup
+    for team in split_matchup:
+        if pick != team:
+            picks[flip_idx][2] = team
+    return picks
+
 def user_input(picks):
     command = raw_input('\nEnter a command... (exit, swap, flip, ags, print, help)\n> ')
     if command == 'exit' or command == 'quit':
@@ -82,14 +102,18 @@ def user_input(picks):
         if len(split_command) != 3:
             print 'invalid swap usage'
         else:
-            first = split_command[1]
-            second = split_command[2]
-            if validate_swap(first, second, len(picks)):
-                picks = swap(first, second, picks)
+            if validate_swap(split_command[1], split_command[2], len(picks)):
+                picks = swap(split_command[1], split_command[2], picks)
                 print_picks(picks)
         user_input(picks)
     elif command.startswith('flip'):
-        print 'flip'
+        split_command = command.split()
+        if len(split_command) != 2:
+            print 'invalid flip usage'
+        else:
+            if validate_flip(split_command[1], len(picks)):
+                picks = flip(split_command[1], picks)
+                print_picks(picks)
         user_input(picks)
     elif command.startswith('ags'):
         print 'ags'
