@@ -93,6 +93,9 @@ def flip(arg, picks):
             picks[flip_idx][2] = team
     return picks
 
+def validate_ags(arg, num_picks):
+    
+
 def user_input(picks):
     command = raw_input('\nEnter a command... (exit, swap, flip, ags, print, help)\n> ')
     if command == 'exit' or command == 'quit':
